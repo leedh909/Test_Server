@@ -89,3 +89,34 @@ app.get('/insert',function(req,res){
         )
     })
 })
+
+app.get('/delete',function(req,res){
+    console.log("delete들어옴");
+    console.log("empno: ",req.query.empno);
+  
+    //DB 연결
+    sql.connect(config,function(err){
+        if(err){
+            console.log("DB connect: ",err);
+        }else{
+            console.log("Enter DB No err");
+        }
+        //Request객체 생성
+        var request = new sql.Request();
+
+        //Query 작성
+        request.query(
+            "DELETE FROM dbo.employee WHERE empno="+req.query.empno+";",
+            // "DELETE FROM dbo.employee WHERE empno=1",
+            function(err,result){
+                if(err){
+                    console.log("sql에러: "+err);
+                }else{
+                    console.log("Delete sql success")
+                }
+                //Query 결과 보내기
+                res.json(result);
+            }
+        )
+    })
+})
